@@ -4,7 +4,7 @@ const inputbox = document.getElementById('msg-input');
 const sendBtn = document.getElementById('send-btn');
 const msgsend = document.querySelector('.msg-send');
 const sendli = document.querySelector('sendli');
-
+const user = document.querySelector('user');
 
 
 
@@ -20,6 +20,17 @@ let messages = [
         "nikhil": "fine"
     }
 ];
+
+console.log(Object.keys(messages));
+console.log(Object);
+let keys = Object.keys(messages);
+console.log(keys.name);
+
+for( val in messages){
+    console.log();
+}
+
+
 
 let messagesString = JSON.stringify(messages);
 
