@@ -60,6 +60,7 @@ function sendtext(e) {
     sendmsg = inputbox.value;
     msgsend.innerHTML = `<li class="reciever row float-right p-2 m-3 rounded text-light bg-primary w-25">${sendmsg}</li>`;
     inputbox.value = '';
+    
 }
 
 
