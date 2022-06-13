@@ -112,38 +112,95 @@ const firebaseConfig = {
   
   imageBtn.addEventListener("click", function (e){
     e.preventDefault();
-    let timestamp = Number(new Date());
+    // let timestamp = Number(new Date());
     let storageRef = firebase.storage().ref(timestamp.toString());
     const msgImg = document.getElementById('message-img');
     let file_data = msgImg.files[0];
     storageRef.put(file_data);
+    console.log(file_data.name);
+
+
+    storageRef.child(file_data.name).getDownloadURL(file_data)
+  .then((url) => {
+      console.log(url);
+    // `url` is the download URL for 'images/stars.jpg'
+
+    // This can be downloaded directly:
+    var xhr = new XMLHttpRequest();
+    xhr.responseType = 'blob';
+    xhr.onload = (event) => {
+      var blob = xhr.response;
+    };
+    xhr.open('GET', url);
+    xhr.send();
+
+    // Or inserted into an <img> element
+    var img = document.getElementById('myimg');
+    img.setAttribute('src', url);
+  })
+  .catch((error) => {
+    // Handle any errors
+  });
+
+
+    console.log(file_data.lastModified);
     console.log(file_data);
     msgImg.value = "";
+    
+    
+})
+// const geturl = getDownloadURL(file_data.lastModified);
+// console.log(geturl);
   
   
-  })
+
+
+
+let timestamp = Number(new Date());
+let storageRef= firebase.storage().ref(timestamp.toString());;
+
+// storageRef.child('1655104491743').getDownloadURL()
+//   .then((url) => {
+//     // `url` is the download URL for 'images/stars.jpg'
+
+//     // This can be downloaded directly:
+//     var xhr = new XMLHttpRequest();
+//     xhr.responseType = 'blob';
+//     xhr.onload = (event) => {
+//       var blob = xhr.response;
+//     };
+//     xhr.open('GET', url);
+//     xhr.send();
+
+//     // Or inserted into an <img> element
+//     var img = document.getElementById('myimg');
+//     img.setAttribute('src', url);
+//   })
+//   .catch((error) => {
+//     // Handle any errors
+//   });
+
+
   
   
+//   const allimages = [] ;
+//   const setImages = [];
   
+//   const getFromFirebase = () =>{
+//     let storageRef = storage.ref();
+//     storageRef.listAll().then(function res(){
+//       res.items.forEach((imageRef)=>{
+//         imageRef.getDownloadUrl().then((url)=>{
+//           setImages((allimages)=>[...allimages, url]);
+//         });
+//       });
+//     })
+//     .catch(function (error){
+//       console.log(error);
+//     });
+//   };
   
-  const allimages = [] ;
-  const setImages = [];
-  
-  const getFromFirebase = () =>{
-    let storageRef = storage.ref();
-    storageRef.listAll().then(function res(){
-      res.items.forEach((imageRef)=>{
-        imageRef.getDownloadUrl().then((url)=>{
-          setImages((allimages)=>[...allimages, url]);
-        });
-      });
-    })
-    .catch(function (error){
-      console.log(error);
-    });
-  };
-  
-  console.log(allimages);
+//   console.log(allimages);
   
   
   
