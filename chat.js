@@ -1,10 +1,4 @@
 
-// Import the functions you need from the SDKs you need
-// import { initializeApp } from "https://www.gstatic.com/firebasejs/9.8.3/firebase-app.js";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
 const firebaseConfig = {
     apiKey: "AIzaSyBWsYUbtGlThZgIMswWOoUZbahWWyGEJbQ",
     authDomain: "messenger-39c9f.firebaseapp.com",
@@ -16,11 +10,8 @@ const firebaseConfig = {
   
   // Initialize Firebase
   firebase.initializeApp(firebaseConfig);
-  
-  // console.log(app);
-  
-  
-  
+ 
+
     function entername(){
       const enterusername = document.getElementById('entername');
       const username = enterusername.value;
@@ -28,6 +19,7 @@ const firebaseConfig = {
     
     }
   
+
   
   const db = firebase.database();
   
@@ -36,19 +28,13 @@ const firebaseConfig = {
   
   document.getElementById("message-form").addEventListener("submit", sendMessage);
   
-  // window.EmojiPicker.init();
-  
-  
-//   const emoji = document.getElementById('message-input');
-//   $(emoji).emojioneArea({
-//     pickerPosition: "bottom",
-//   })
-  
   
   
   function sendMessage(e) {
       e.preventDefault();
     
+      // sendimage();
+      
       // get values to be submitted
       const timestamp = Date.now();
       const messageInput = document.getElementById("message-input");
@@ -58,11 +44,6 @@ const firebaseConfig = {
     console.log(message);
       // clear the input box
       messageInput.value = "";
-    
-      //auto scroll to bottom
-      // document
-      //   .getElementById("messages")
-      //   .scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" });
     
       // create db collection and send in the data
       db.ref("messages/" + timestamp).set({
@@ -88,137 +69,71 @@ const firebaseConfig = {
   
     // ***************************************************************************
     
-  
-    // function sendimage(){
-    //   // e.preventDefault();
-    //   const messageImg = document.getElementById("message-img").files[0];
-    //   // const msgimg = messageImg.value;
-    //       console.log(messageImg);
-          
-    // }
-  //  function sendImg(e){
-  //   e.preventDefault();
-  //   var timestamp = Number(new Date());
-  //   var storageRef = firebase.storage().ref(timestamp.toString());
-  
-  //   var msgim =  document.getElementById('message-img').prop(files)[0];
-  //   var file_data = msgim;
-  //   console.log(file_data);
-  //   storageRef.put(msgim);
-  // }
-  
-  
+
+// ************ send image to firebase storage ******************* 
+
   const imageBtn = document.getElementById('img-btn');
   
-  imageBtn.addEventListener("click", function (e){
-    e.preventDefault();
+  imageBtn.addEventListener("click", sendimage);
+  function sendimage(){
+
+    // e.preventDefault();
     // let timestamp = Number(new Date());
-    let storageRef = firebase.storage().ref(timestamp.toString());
     const msgImg = document.getElementById('message-img');
     let file_data = msgImg.files[0];
+    let storageRef = firebase.storage().ref('images/'+file_data.name);
+
     storageRef.put(file_data);
     console.log(file_data.name);
+    const image = document.getElementById('myimg');
 
-
-    storageRef.child(file_data.name).getDownloadURL(file_data)
-  .then((url) => {
+    storageRef.getDownloadURL(file_data)
+    .then( function(url){
       console.log(url);
-    // `url` is the download URL for 'images/stars.jpg'
-
-    // This can be downloaded directly:
-    var xhr = new XMLHttpRequest();
-    xhr.responseType = 'blob';
-    xhr.onload = (event) => {
-      var blob = xhr.response;
-    };
-    xhr.open('GET', url);
-    xhr.send();
-
-    // Or inserted into an <img> element
-    var img = document.getElementById('myimg');
-    img.setAttribute('src', url);
-  })
-  .catch((error) => {
-    // Handle any errors
-  });
-
-
+      image.src = url;
+    })
+    
     console.log(file_data.lastModified);
     console.log(file_data);
     msgImg.value = "";
-    
-    
-})
-// const geturl = getDownloadURL(file_data.lastModified);
-// console.log(geturl);
-  
-  
+}
 
+
+  
 
 
 let timestamp = Number(new Date());
 let storageRef= firebase.storage().ref(timestamp.toString());;
 
-// storageRef.child('1655104491743').getDownloadURL()
-//   .then((url) => {
-//     // `url` is the download URL for 'images/stars.jpg'
-
-//     // This can be downloaded directly:
-//     var xhr = new XMLHttpRequest();
-//     xhr.responseType = 'blob';
-//     xhr.onload = (event) => {
-//       var blob = xhr.response;
-//     };
-//     xhr.open('GET', url);
-//     xhr.send();
-
-//     // Or inserted into an <img> element
-//     var img = document.getElementById('myimg');
-//     img.setAttribute('src', url);
-//   })
-//   .catch((error) => {
-//     // Handle any errors
-//   });
+  
 
 
-  
-  
-//   const allimages = [] ;
-//   const setImages = [];
-  
-//   const getFromFirebase = () =>{
-//     let storageRef = storage.ref();
-//     storageRef.listAll().then(function res(){
-//       res.items.forEach((imageRef)=>{
-//         imageRef.getDownloadUrl().then((url)=>{
-//           setImages((allimages)=>[...allimages, url]);
-//         });
-//       });
-//     })
-//     .catch(function (error){
-//       console.log(error);
-//     });
-//   };
-  
-//   console.log(allimages);
-  
-  
-  
-  
-  
-  
-  //   function gmailsign(){
-  //   var provider = new firebase.auth.GoogleAuthProvider();
-  
-  //   firebase.auth()
-  //   .signInWithPopup(provider)
-  //   .then((result) => {
-  //   console.log(result);
-  //   }).catch((error) => {
-    
-  //   });
-  // }
-  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  // ****************** signup *********************
   
   async function signup(e){
     e.preventDefault();
@@ -248,7 +163,7 @@ let storageRef= firebase.storage().ref(timestamp.toString());;
   }
   
   
-  
+// ************* normal login *********************
   
   async function login(e){
     e.preventDefault();
@@ -269,7 +184,8 @@ let storageRef= firebase.storage().ref(timestamp.toString());;
     password.value = "";
   }
   
-  
+//  ***************** logout *************************
+
   function logout(){
     firebase.auth().signOut();
   }
@@ -282,7 +198,7 @@ let storageRef= firebase.storage().ref(timestamp.toString());;
     }
   });
   
-  
+  //*************** login with goole   *************************** 
   
   async function loginWithGoogle(){
     var provider = new firebase.auth.GoogleAuthProvider();
