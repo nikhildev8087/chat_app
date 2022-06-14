@@ -34,7 +34,8 @@ const firebaseConfig = {
       e.preventDefault();
     
       // sendimage();
-      
+      const url = 'https://firebasestorage.googleapis.com/v0/b/messenger-39c9f.appspot.com/o/images%2F1655189114394?alt=media&token=b10de293-cb1c-4113-bef7-997e83b93962'; 
+
       // get values to be submitted
       const timestamp = Date.now();
       const messageInput = document.getElementById("message-input");
@@ -49,6 +50,7 @@ const firebaseConfig = {
       db.ref("messages/" + timestamp).set({
         username,
         message,
+        url,
       });
     }
   
@@ -62,7 +64,13 @@ const firebaseConfig = {
       const messages = snapshot.val();
       const message = `<li class=${
         username === messages.username ? "sent" : "receive"
-      }><span>${messages.username}: </span>${messages.message} </li>`;
+      }><span>${messages.username}: </span>${messages.message} 
+      
+      </li>
+      <img src="${messages.url}" class=${
+        username === messages.username ? "sent" : "receive"
+      } width="200px" height="auto" id="myimg" alt="">
+      `;
       // append the message on the page
       document.getElementById("messages").innerHTML += message;
     });
@@ -90,12 +98,14 @@ const firebaseConfig = {
     storageRef.getDownloadURL(file_data)
     .then( function(url){
       console.log(url);
+      var imgurl = url
       image.src = url;
     })
-    
+    console.log(image.src);
     console.log(file_data.lastModified);
     console.log(file_data);
     msgImg.value = "";
+
 }
 
 
@@ -109,8 +119,11 @@ let storageRef= firebase.storage().ref(timestamp.toString());;
 
 
 
+//emoji working
 
 
+// const textarea = document.getElementById('textarea');
+// textarea.emojioneArea()
 
 
 
