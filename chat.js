@@ -20,12 +20,41 @@ const firebaseConfig = {
     }
   
 
-  
   const db = firebase.database();
   
   const username = prompt("Please Tell Us Your Name");
   console.log(username);
   
+  db.ref("msgusers/"+username).set({
+    username,
+  })
+  
+  const fetchuser = db.ref("msgusers/");
+  fetchuser.on("child_added", (snapshot)=>{
+    const data = snapshot.val();
+    console.log(data);           
+
+    const userlist = `<li class="p-3 bg-warning mt-2 text-right rounded ${data.username}" id="${data.username}" onclick="showusermsg(this)">
+    ${data.username}
+      
+     </li>`
+      document.getElementById('userslist').innerHTML += userlist;
+
+  })
+
+
+  function showusermsg(usr){
+console.log(usr)
+const result = usr.getAttribute('id');
+    console.log(result);
+    showmymessage(result);
+  }
+
+
+  function showmymessage(user){
+    console.log(user);
+  }
+
   document.getElementById("message-form").addEventListener("submit", sendMessage);
   
   
@@ -35,12 +64,14 @@ const firebaseConfig = {
 
       const msgImg = document.getElementById('message-img');
       let file_data = msgImg.files[0];
+      
       let storageRef = firebase.storage().ref('images/'+file_data.name);
   
       storageRef.put(file_data);
       console.log(file_data.name);
 
       const image = document.getElementById('myimg2');
+      const url = '';
 
   var imgurl;
       storageRef.getDownloadURL(file_data)
@@ -72,7 +103,7 @@ const firebaseConfig = {
     
       // create db collection and send in the data
       function setdb(url){
-      db.ref("messages/" + timestamp).set({
+      db.ref("messages/" + username +timestamp).set({
         username,
         message,
        url,
@@ -88,18 +119,33 @@ const firebaseConfig = {
   
     fetchMessage.on("child_added", function (snapshot) {
       const messages = snapshot.val();
+      console.log(messages.username);
       const message = `<li class=${
         username === messages.username ? "sent" : "receive"
       }><span>${messages.username}: </span>${messages.message} 
       
-      </li>
+      </li>    
+
+      
       <img src="${messages.url}" class=${
         username === messages.username ? "sent" : "receive"
       } width="200px" height="auto" id="myimg" alt="">
       `;
       // append the message on the page
       document.getElementById("messages").innerHTML += message;
+
+    //   const userlist = `<li class="p-3 bg-warning mt-2 text-right rounded ">
+    //   ${messages.username}
+    // </li>`
+    //   document.getElementById('userslist').innerHTML += userlist;
+
+
+    const imageur = document.querySelector("#myimg");
+    if(imageur.url = undefined){
+      imageur.style.display="none";
+    }
     });
+
   
     // ***************************************************************************
     
@@ -182,18 +228,25 @@ let storageRef= firebase.storage().ref(timestamp.toString());;
     const mailId = document.getElementById('mailid');
     const password = document.getElementById('Password');
     console.log(mailId.value ,password.value);
+    const mail = mailId.value;
+    const pass = password.value;
+    const timestamp = Date.now()
+    db.ref("users/"+timestamp).set({
+      mail,
+      pass,
+    })
   
     try{
   
         const result = await firebase.auth().createUserWithEmailAndPassword(mailId.value, mailId.value);
         await result.user.updateProfile({
-            displayName: "User"
+            displayName: user.email
           })
   
           createUserCollection(result.user);
   
-      await result.user.sendEmailVerification()
-        console.log(result.user.email);
+      // await result.user.sendEmailVerification()
+      //   console.log(result.user.email);
   
     }catch(error){
         console.log(error);
@@ -235,6 +288,8 @@ let storageRef= firebase.storage().ref(timestamp.toString());;
   const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
     if (user) {
       console.log(user);
+
+
     } else {
       console.log('signout');
     }
