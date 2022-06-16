@@ -44,16 +44,15 @@ const firebaseConfig = {
 
 
   function showusermsg(usr){
-console.log(usr)
-const result = usr.getAttribute('id');
+    console.log(usr)
+    const result = usr.getAttribute('id');
     console.log(result);
+
     showmymessage(result);
   }
 
 
-  function showmymessage(user){
-    console.log(user);
-  }
+  
 
   document.getElementById("message-form").addEventListener("submit", sendMessage);
   
@@ -111,15 +110,19 @@ const result = usr.getAttribute('id');
     }
     }
   
+  // showmymessage(username);
   
   
   
-    const fetchMessage = db.ref("messages/");
-  
-  
+  // function showmymessage(user){
+    // console.log(user);
+    const fetchMessage = db.ref("messages/");      
+ 
+
     fetchMessage.on("child_added", function (snapshot) {
       const messages = snapshot.val();
       console.log(messages.username);
+
       const message = `<li class=${
         username === messages.username ? "sent" : "receive"
       }><span>${messages.username}: </span>${messages.message} 
@@ -145,6 +148,48 @@ const result = usr.getAttribute('id');
       imageur.style.display="none";
     }
     });
+
+  // }
+
+
+
+
+  function showmymessage(user){
+    console.log(user);
+    const fetchMessage = db.ref("messages/");      
+ 
+
+    fetchMessage.on("child_added", function (snapshot) {
+      const messages = snapshot.val();
+      console.log(messages.username);
+
+      const message = `<li class=${
+        user === messages.username ? "sent" : "receive"
+      }><span>${messages.username}: </span>${messages.message} 
+      
+      </li>
+
+      
+      <img src="${messages.url}" class=${
+        username === messages.username ? "sent" : "receive"
+      } width="200px" height="auto" id="myimg" alt="">
+      `;
+      // append the message on the page
+      document.getElementById("messages").innerHTML += message;
+
+    //   const userlist = `<li class="p-3 bg-warning mt-2 text-right rounded ">
+    //   ${messages.username}
+    // </li>`
+    //   document.getElementById('userslist').innerHTML += userlist;
+
+
+    const imageur = document.querySelector("#myimg");
+    if(imageur.url = undefined){
+      imageur.style.display="none";
+    }
+    });
+
+  }
 
   
     // ***************************************************************************
