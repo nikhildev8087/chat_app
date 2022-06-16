@@ -12,7 +12,7 @@
 
     
 
-    <title>Chat</title>
+    <title>Messanger App</title>
 
 
     <style>
@@ -21,7 +21,7 @@
         padding: 10px;
         margin-top: 10px;
         text-align: right;
-        background-color: rgb(158, 110, 38);
+        background-color: rgb(43, 140, 196);
         display: block;
         border-radius: 25px;
         /* width: fit-content; */
@@ -43,6 +43,13 @@
       #myimg{
         width: 200px;
        
+      }
+
+      .hideimg{
+        display: none;
+      }
+      .showimg{
+        padding-top: 20px;
       }
       
       
@@ -143,22 +150,22 @@
 
 
 
-<div class="container">
+<div class="container text-center">
 <button class="btn btn-primary m-3" onclick="loginWithGoogle()">Login with Google</button>
 </div>
 
 
 
-<input type="text" id="entername">
-<button onclick="entername()">submit</button>
+<!-- <input type="text" id="entername">
+<button onclick="entername()">submit</button> -->
 
 
 <div class="jumbotron">
   
 
   
-  <div class=" bg-primary  text-center rounded justify-content-center">
-    <h1 class="text-light p-3 ">Messanger</h1>
+  <div class=" bg-primary mb-3 text-center rounded justify-content-center">
+    <h1  class="text-light p-3 ">Messanger</h1>
   
   </div>
   
@@ -166,13 +173,16 @@
   <div class="row">
 
   
-      <div class=" col-md-6" id="chat">
+      <div class=" col-md-8 border rounded p-3" id="chat">
+       <h3 class="text-center p-3 bg-primary text-light rounded font-weight-bold">Chat Room</h3>
+       <div id="hidechat" class="hidechat">
+
        
-        <ul style="list-style-type: none;" id="messages">
+        <ul style="list-style-type: none;" class="px-5" id="messages">
 
 
         </ul>
-  
+      </div>
         
         <div class="justify-content-center ">
         <form class="" id="message-form">
@@ -182,15 +192,15 @@
       </div>
     </div>
 
-    <div class=" col-md-6">
+    <div class="col-md-4">
       <div class="row">
-        <div class="col-md-12 bg-dark rounded">
+        <div class="col-md-12 p-3 rounded">
 
-          <h3 class="text-center text-light font-weight-bold">users list</h3>
+          <h3 class="text-center p-3 bg-dark text-light rounded font-weight-bold">User Lists</h3>
         </div>
       </div>
       <div class="row">
-        <ul id="userslist" class="ml-auto w-50" style="list-style-type: none;">
+        <ul id="userslist" class="px-3 w-100" style="list-style-type: none;">
           <!-- <li class="p-3 bg-warning mt-2 text-right rounded ">
             user1
           </li>
@@ -222,6 +232,17 @@
     <p class="lead emoji-picker-container">
       <i class="fas fa-grin" onclick="emojipick()"></i>
     <textarea type="textbox" id="textarea"  class="form-control" placeholder="Input field" ></textarea>
+
+
+
+    <div class="container">
+      <div  class="messages">
+        <ul id="usermessage">
+          
+        </ul>
+
+      </div>
+    </div>
 
     <script>
 
